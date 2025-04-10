@@ -1,5 +1,15 @@
 import { Meteor } from 'meteor/meteor'
 import { LinksCollection } from '/imports/api/links'
+import { Accounts } from 'meteor/accounts-base'
+
+Accounts.config({
+  defaultFieldSelector: {
+    emails: 1,
+    profile: 1,
+    username: 1,
+    colour: 1
+  }
+})
 
 async function insertLink({ title, url }) {
   await LinksCollection.insertAsync({ title, url, createdAt: new Date() })
@@ -27,5 +37,19 @@ Meteor.startup(async () => {
       title: 'Discussions',
       url: 'https://forums.meteor.com',
     })
+  }
+
+  if ((await Meteor.users.find().countAsync()) === 0) {
+    console.log('creating default user')
+    const userId = await Accounts.createUser({
+      username: 'user',
+      email: 'user@openclinical.net',
+      password: 'changeme',
+      profile: {
+        first_name: 'User',
+        last_name: 'User',
+      }
+    })
+    await Meteor.users.updateAsync({_id: userId}, {$set: {colour: 'blue'}})
   }
 })

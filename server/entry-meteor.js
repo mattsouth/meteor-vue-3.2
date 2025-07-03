@@ -7,3 +7,14 @@
  **/
 import "../_vite-bundle/server/_entry.mjs"
 /** End of vite auto-imports **/
+
+import { Accounts } from 'meteor/accounts-base'
+
+Accounts.config({
+  defaultFieldSelector: {
+    emails: 1,
+    profile: 1,
+    username: 1,
+    colour: 1
+  }
+})

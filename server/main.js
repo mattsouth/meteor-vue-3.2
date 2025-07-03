@@ -2,15 +2,6 @@ import { Meteor } from 'meteor/meteor'
 import { LinksCollection } from '/imports/api/links'
 import { Accounts } from 'meteor/accounts-base'
 
-Accounts.config({
-  defaultFieldSelector: {
-    emails: 1,
-    profile: 1,
-    username: 1,
-    colour: 1
-  }
-})
-
 async function insertLink({ title, url }) {
   await LinksCollection.insertAsync({ title, url, createdAt: new Date() })
 }
